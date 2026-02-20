@@ -51,17 +51,7 @@ const Index = () => {
 
       {/* ===== FLOATING EYE - scroll-linked ===== */}
       <motion.div
-        className="fixed top-0 h-full w-[65%] pointer-events-none z-0 hidden md:block origin-center"
-        animate={{
-          scaleY: [1, 1, 0.02, 1, 1],
-        }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          repeatDelay: 8.8,
-          times: [0, 0.3, 0.5, 0.7, 1],
-          ease: "easeInOut",
-        }}
+        className="fixed top-0 h-full w-[65%] pointer-events-none z-0 hidden md:block"
         style={{
           x: eyeX,
           opacity: eyeOpacity,
@@ -97,6 +87,33 @@ const Index = () => {
             src={eyeBg}
           />
         </motion.div>
+        {/* Eyelid blink overlays */}
+        <motion.div
+          className="absolute inset-x-0 top-0 bg-background z-10"
+          animate={{
+            height: ["0%", "0%", "52%", "0%", "0%"],
+          }}
+          transition={{
+            duration: 0.6,
+            repeat: Infinity,
+            repeatDelay: 9.4,
+            times: [0, 0.2, 0.5, 0.8, 1],
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute inset-x-0 bottom-0 bg-background z-10"
+          animate={{
+            height: ["0%", "0%", "52%", "0%", "0%"],
+          }}
+          transition={{
+            duration: 0.6,
+            repeat: Infinity,
+            repeatDelay: 9.4,
+            times: [0, 0.2, 0.5, 0.8, 1],
+            ease: "easeInOut",
+          }}
+        />
         {/* Gradient overlay that also shifts */}
         <motion.div
           className="absolute inset-0 w-full h-full"
