@@ -37,9 +37,9 @@ const Index = () => {
   // Eye: right → left → center as you scroll through 3 sections
   const eyeX = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], ["55%", "-10%", "-10%", "17.5%"]);
   const eyeOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.66, 0.82, 0.92, 1], [0.85, 0.4, 0.4, 0.65, 1, 1, 0]);
-  const eyeScale = useTransform(scrollYProgress, [0, 0.33, 0.66, 0.85, 1], [1, 1.05, 1, 2.2, 3]);
-  const blackOverlayOpacity = useTransform(scrollYProgress, [0.85, 0.95], [0, 1]);
-  const sandalContentOpacity = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
+  const eyeScale = useTransform(scrollYProgress, [0, 0.33, 0.66, 0.82, 0.95], [1, 1.05, 1, 1.8, 3.5]);
+  const blackOverlayOpacity = useTransform(scrollYProgress, [0.78, 0.92], [0, 1]);
+  const sandalContentOpacity = useTransform(scrollYProgress, [0.88, 0.98], [0, 1]);
   const heroTextOpacity = useTransform(scrollYProgress, [0, 0.33, 0.55], [1, 1, 0]);
   const approachTextOpacity = useTransform(scrollYProgress, [0.33, 0.66, 0.85], [1, 1, 0]);
 
