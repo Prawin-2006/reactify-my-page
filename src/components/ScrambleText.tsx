@@ -8,7 +8,7 @@ interface ScrambleTextProps {
   interval?: number;
 }
 
-const ScrambleText = ({ text, className, interval = 20000 }: ScrambleTextProps) => {
+const ScrambleText = ({ text, className, interval = 8000 }: ScrambleTextProps) => {
   const [display, setDisplay] = useState(text);
   const [glitching, setGlitching] = useState(false);
   const frameRef = useRef<number>(0);
