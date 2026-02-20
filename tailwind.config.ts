@@ -84,6 +84,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        ripple: {
+          "0%": { width: "0", height: "0", opacity: "0.6" },
+          "100%": { width: "600px", height: "600px", opacity: "0" },
+        },
       },
       animation: {
         "fade-in": "fade-in 1.5s ease-out forwards",
