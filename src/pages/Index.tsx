@@ -31,7 +31,7 @@ const Index = () => {
   });
 
   // Smooth out the scroll progress with a spring
-  const scrollYProgress = useSpring(rawProgress, { stiffness: 80, damping: 30, mass: 0.5 });
+  const scrollYProgress = useSpring(rawProgress, { stiffness: 150, damping: 40, mass: 0.3 });
 
   // Eye: right → left → center as you scroll through 3 sections
   const eyeX = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], ["55%", "-10%", "-10%", "17.5%"]);
