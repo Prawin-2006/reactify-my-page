@@ -35,16 +35,33 @@ const Index = () => {
 
   // Eye: right → left → center as you scroll through 3 sections
   const eyeX = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], ["55%", "-10%", "-10%", "17.5%"]);
-  const maskProgress = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0, 0.5, 0.5, 1]);
-  // Opacity: visible → dim → dim → fully visible
   const eyeOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.66, 0.82, 0.92, 1], [0.85, 0.4, 0.4, 0.65, 1, 1, 0]);
-  // Scale: normal → slight → slight → big zoom
   const eyeScale = useTransform(scrollYProgress, [0, 0.33, 0.66, 0.85, 1], [1, 1.05, 1, 2.2, 3]);
-  // Black overlay fades in at the very end
   const blackOverlayOpacity = useTransform(scrollYProgress, [0.88, 1], [0, 1]);
-  // Text fade out in third section
   const heroTextOpacity = useTransform(scrollYProgress, [0, 0.33, 0.55], [1, 1, 0]);
   const approachTextOpacity = useTransform(scrollYProgress, [0.33, 0.66, 0.85], [1, 1, 0]);
+
+  // Mask & gradient transforms (hoisted out of JSX to avoid re-creation on render)
+  const maskGradient = useTransform(
+    scrollYProgress,
+    [0, 0.33, 0.66, 1],
+    [
+      "linear-gradient(to right, transparent 0%, black 30%, black 80%, transparent 100%)",
+      "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
+      "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
+      "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+    ]
+  );
+  const bgGradient = useTransform(
+    scrollYProgress,
+    [0, 0.5, 0.85, 1],
+    [
+      "linear-gradient(to right, hsl(var(--background)) 0%, transparent 30%)",
+      "linear-gradient(to left, hsl(var(--background)) 0%, transparent 30%)",
+      "linear-gradient(to left, transparent 0%, transparent 100%)",
+      "linear-gradient(to left, transparent 0%, transparent 100%)",
+    ]
+  );
 
   return (
     <div
@@ -68,24 +85,8 @@ const Index = () => {
         <motion.div
           className="w-full h-full relative"
           style={{
-            maskImage: useTransform(
-              maskProgress,
-              [0, 0.5, 1],
-              [
-                "linear-gradient(to right, transparent 0%, black 30%, black 80%, transparent 100%)",
-                "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
-                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-              ]
-            ),
-            WebkitMaskImage: useTransform(
-              maskProgress,
-              [0, 0.5, 1],
-              [
-                "linear-gradient(to right, transparent 0%, black 30%, black 80%, transparent 100%)",
-                "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
-                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-              ]
-            ),
+            maskImage: maskGradient,
+            WebkitMaskImage: maskGradient,
           }}
         >
           <img
@@ -94,21 +95,9 @@ const Index = () => {
             src={eyeBg}
           />
         </motion.div>
-        {/* Gradient overlay that also shifts */}
         <motion.div
           className="absolute inset-0 w-full h-full"
-          style={{
-            background: useTransform(
-              scrollYProgress,
-              [0, 0.5, 0.85, 1],
-              [
-                "linear-gradient(to right, hsl(var(--background)) 0%, transparent 30%)",
-                "linear-gradient(to left, hsl(var(--background)) 0%, transparent 30%)",
-                "linear-gradient(to left, transparent 0%, transparent 100%)",
-                "linear-gradient(to left, transparent 0%, transparent 100%)",
-              ]
-            ),
-          }}
+          style={{ background: bgGradient }}
         />
       </motion.div>
 
