@@ -1,57 +1,45 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#&";
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 
 interface ScrambleTextProps {
   text: string;
   className?: string;
   interval?: number;
+  scrambleDuration?: number;
 }
 
-const ScrambleText = ({ text, className, interval = 8000 }: ScrambleTextProps) => {
+const ScrambleText = ({ text, className, interval = 20000, scrambleDuration = 1500 }: ScrambleTextProps) => {
   const [display, setDisplay] = useState(text);
-  const frameRef = useRef<number>(0);
 
   const scramble = useCallback(() => {
-    const duration = 3000;
-    const start = performance.now();
-    // Random resolve order for each character
-    const order = text.split("").map((_, i) => ({ i, r: Math.random() }));
-    order.sort((a, b) => a.r - b.r);
-    const resolveAt = order.map((o, idx) => ({ charIndex: o.i, threshold: (idx + 1) / text.length }));
+    const steps = 10;
+    const stepTime = scrambleDuration / steps;
+    let step = 0;
 
-    const tick = () => {
-      const elapsed = performance.now() - start;
-      const progress = Math.min(elapsed / duration, 1);
-
+    const tick = setInterval(() => {
+      step++;
+      const progress = step / steps;
       const result = text
         .split("")
         .map((char, i) => {
           if (char === "-" || char === " ") return char;
-          const entry = resolveAt.find(e => e.charIndex === i)!;
-          if (progress > entry.threshold) return char;
+          if (progress > (i + 1) / text.length) return char;
           return CHARS[Math.floor(Math.random() * CHARS.length)];
         })
         .join("");
-
       setDisplay(result);
 
-      if (progress < 1) {
-        frameRef.current = requestAnimationFrame(tick);
-      } else {
+      if (step >= steps) {
+        clearInterval(tick);
         setDisplay(text);
       }
-    };
-
-    frameRef.current = requestAnimationFrame(tick);
-  }, [text]);
+    }, stepTime);
+  }, [text, scrambleDuration]);
 
   useEffect(() => {
     const id = setInterval(scramble, interval);
-    return () => {
-      clearInterval(id);
-      cancelAnimationFrame(frameRef.current);
-    };
+    return () => clearInterval(id);
   }, [scramble, interval]);
 
   return <span className={className}>{display}</span>;
