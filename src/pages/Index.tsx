@@ -1,6 +1,4 @@
-import { useRef } from "react";
 import { ArrowRight, Fingerprint, Eye, CircleDot } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import eyeBg from "@/assets/eye-bg.jpg";
@@ -24,97 +22,33 @@ const services = [
 ];
 
 const Index = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Eye moves from right (35%) to left (-40%) as you scroll
-  const eyeX = useTransform(scrollYProgress, [0, 1], ["55%", "-10%"]);
-  // Mask direction flips: starts fading left edge, ends fading right edge
-  const maskProgress = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1]);
-  // Opacity pulses slightly during transition
-  const eyeOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.85, 0.4, 0.4, 0.65]);
-  // Scale subtly during transition
-  const eyeScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1]);
-
   return (
-    <div
-      ref={containerRef}
-      className="bg-background text-foreground font-body min-h-screen flex flex-col overflow-x-hidden relative transition-colors duration-500"
-    >
+    <div className="bg-background text-foreground font-body min-h-screen flex flex-col overflow-x-hidden relative transition-colors duration-500">
       {/* Grain overlay */}
       <div className="fixed inset-0 bg-grain pointer-events-none z-0" />
 
       <Navbar />
 
-      {/* ===== FLOATING EYE - scroll-linked ===== */}
-      <motion.div
-        className="fixed top-0 h-full w-[65%] pointer-events-none z-0 hidden md:block"
-        style={{
-          x: eyeX,
-          opacity: eyeOpacity,
-          scale: eyeScale,
-        }}
-        animate={{
-          scaleY: [1, 1, 0.05, 1, 1],
-        }}
-        transition={{
-          duration: 0.4,
-          repeat: Infinity,
-          repeatDelay: 9.6,
-          times: [0, 0.3, 0.5, 0.7, 1],
-          ease: "easeInOut",
-        }}
-      >
-        <motion.div
-          className="w-full h-full relative"
-          style={{
-            maskImage: useTransform(
-              maskProgress,
-              [0, 0.5, 1],
-              [
-                "linear-gradient(to right, transparent 0%, black 30%, black 80%, transparent 100%)",
-                "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
-                "linear-gradient(to right, transparent 0%, black 20%, black 70%, transparent 100%)",
-              ]
-            ),
-            WebkitMaskImage: useTransform(
-              maskProgress,
-              [0, 0.5, 1],
-              [
-                "linear-gradient(to right, transparent 0%, black 30%, black 80%, transparent 100%)",
-                "linear-gradient(to right, transparent 10%, black 30%, black 70%, transparent 90%)",
-                "linear-gradient(to right, transparent 0%, black 20%, black 70%, transparent 100%)",
-              ]
-            ),
-          }}
-        >
-          <img
-            alt="Artistic eye sketch background"
-            className="w-full h-full object-cover object-center"
-            src={eyeBg}
-          />
-        </motion.div>
-        {/* Gradient overlay that also shifts */}
-        <motion.div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            background: useTransform(
-              scrollYProgress,
-              [0, 1],
-              [
-                "linear-gradient(to right, hsl(var(--background)) 0%, transparent 30%)",
-                "linear-gradient(to left, hsl(var(--background)) 0%, transparent 30%)",
-              ]
-            ),
-          }}
-        />
-      </motion.div>
-
       {/* ===== HERO SECTION ===== */}
       <section className="relative min-h-screen flex flex-col justify-center">
+        {/* Background image - right side */}
+        <div className="absolute top-0 right-0 h-full w-[65%] pointer-events-none z-0 hidden md:block opacity-60 mix-blend-multiply">
+          <div
+            className="w-full h-full relative"
+            style={{
+              maskImage: "linear-gradient(to right, transparent, black 40%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 40%)",
+            }}
+          >
+            <img
+              alt="Artistic eye sketch background"
+              className="w-full h-full object-cover object-center translate-x-[10%]"
+              src={eyeBg}
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent w-full h-full" />
+        </div>
+
         <div className="relative z-10 pt-24 pb-12 px-4 md:px-12 w-full max-w-7xl mx-auto">
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="flex flex-col items-start gap-8 animate-fade-in relative z-20 max-w-2xl">
@@ -164,16 +98,28 @@ const Index = () => {
 
       {/* ===== APPROACH SECTION ===== */}
       <section id="approach" className="relative min-h-screen flex flex-col justify-center">
+        {/* Background image - left side */}
+        <div className="absolute top-0 left-0 h-full w-full md:w-[60%] pointer-events-none z-0 overflow-hidden">
+          <div
+            className="w-full h-full relative opacity-90"
+            style={{
+              maskImage: "linear-gradient(to right, black 60%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, black 60%, transparent 100%)",
+            }}
+          >
+            <img
+              alt="Artistic red eye illustration"
+              className="w-full h-full object-cover object-left"
+              src={eyeBg}
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-l from-background via-transparent to-transparent w-full h-full" />
+        </div>
+
         <div className="relative z-10 py-24 px-4 md:px-12 w-full max-w-7xl mx-auto">
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="hidden md:block" />
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.2 }}
-              className="flex flex-col items-start gap-8 relative z-20"
-            >
+            <div className="flex flex-col items-start gap-8 animate-fade-in relative z-20">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 py-1 px-4 border border-primary/20 bg-primary/5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -188,15 +134,8 @@ const Index = () => {
               </div>
 
               <div className="space-y-8 mt-4 w-full max-w-md">
-                {services.map((service, i) => (
-                  <motion.div
-                    key={service.title}
-                    initial={{ opacity: 0, x: 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 + i * 0.15, ease: "easeOut" }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    className="flex gap-6 group"
-                  >
+                {services.map((service) => (
+                  <div key={service.title} className="flex gap-6 group">
                     <div className="flex-shrink-0 w-12 h-12 rounded-full border border-border flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                       <service.icon className="w-5 h-5" />
                     </div>
@@ -208,7 +147,7 @@ const Index = () => {
                         {service.description}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -222,7 +161,7 @@ const Index = () => {
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
