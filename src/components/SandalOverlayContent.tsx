@@ -79,13 +79,13 @@ const SandalOverlayContent = ({ opacity }: SandalOverlayContentProps) => {
           transition={{ duration: 0.7, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <span className="inline-block py-1.5 px-5 border border-foreground/20 rounded-full text-[10px] tracking-[0.25em] uppercase font-medium text-foreground/60 mb-6">
+          <span className="inline-block py-1.5 px-5 border border-foreground/20 rounded-full text-[10px] tracking-[0.25em] uppercase font-medium text-muted-foreground mb-6">
             AI-Powered Solutions
           </span>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium tracking-tight text-foreground/90 leading-[1.05] mb-6">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium tracking-tight text-foreground leading-[1.05] mb-6">
             Intelligence,<br />Engineered.
           </h2>
-          <p className="text-foreground/50 font-light text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground font-light text-base md:text-lg max-w-xl mx-auto leading-relaxed">
             A-Zentrix delivers cutting-edge AI solutions that transform how enterprises operate, compete, and innovate.
           </p>
         </motion.div>
@@ -99,14 +99,14 @@ const SandalOverlayContent = ({ opacity }: SandalOverlayContentProps) => {
               transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.2 }}
             >
-              <RippleCard className="group h-full p-6 md:p-8 rounded-2xl border border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] transition-all duration-300">
-                <div className="w-11 h-11 rounded-xl bg-foreground/[0.08] flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors">
-                  <service.icon className="w-5 h-5 text-foreground/60 group-hover:text-primary transition-colors" />
+              <RippleCard className="group h-full p-6 md:p-8 rounded-2xl border border-border bg-card hover:bg-accent transition-all duration-300">
+                <div className="w-11 h-11 rounded-xl bg-muted flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors">
+                  <service.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
-                <h3 className="font-display text-sm tracking-widest uppercase font-semibold text-foreground/80 mb-2">
+                <h3 className="font-display text-sm tracking-widest uppercase font-semibold text-foreground mb-2">
                   {service.title}
                 </h3>
-                <p className="text-xs text-foreground/45 leading-relaxed font-light">
+                <p className="text-xs text-muted-foreground leading-relaxed font-light">
                   {service.description}
                 </p>
               </RippleCard>
@@ -118,7 +118,7 @@ const SandalOverlayContent = ({ opacity }: SandalOverlayContentProps) => {
           <a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="inline-flex items-center gap-3 px-10 py-4 bg-foreground/90 rounded-full text-background text-xs tracking-[0.2em] uppercase font-medium hover:bg-foreground transition-all duration-300 shadow-lg"
+            className="inline-flex items-center gap-3 px-10 py-4 bg-foreground rounded-full text-background text-xs tracking-[0.2em] uppercase font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-lg"
           >
             Back to Top
           </a>
