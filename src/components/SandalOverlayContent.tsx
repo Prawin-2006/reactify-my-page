@@ -97,8 +97,12 @@ const SandalOverlayContent = ({ opacity }: SandalOverlayContentProps) => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.2 }}
-              className="group p-6 md:p-8 rounded-2xl border border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] transition-all duration-300"
+              className="group relative p-6 md:p-8 rounded-2xl border border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] transition-all duration-300 overflow-hidden"
             >
+              {/* Water drop ripple */}
+              <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100">
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-primary/10 group-hover:animate-[ripple_0.8s_ease-out_forwards]" />
+              </span>
               <div className="w-11 h-11 rounded-xl bg-foreground/[0.08] flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors">
                 <service.icon className="w-5 h-5 text-foreground/60 group-hover:text-primary transition-colors" />
               </div>
