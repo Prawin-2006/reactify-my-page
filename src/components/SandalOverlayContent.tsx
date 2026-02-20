@@ -1,5 +1,5 @@
-import { useRef, useCallback } from "react";
-import { motion, MotionValue } from "framer-motion";
+import { useRef, useCallback, useEffect, useState } from "react";
+import { motion, MotionValue, useMotionValueEvent } from "framer-motion";
 import { Brain, Cpu, BarChart3, Sparkles, Zap, Globe } from "lucide-react";
 
 const aiServices = [
@@ -41,6 +41,16 @@ interface SandalOverlayContentProps {
 
 const SandalOverlayContent = ({ opacity }: SandalOverlayContentProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Reset scroll to top whenever the overlay becomes visible
+  useMotionValueEvent(opacity, "change", (latest) => {
+    const nowVisible = latest > 0.05;
+    if (nowVisible && !isVisible) {
+      scrollRef.current?.scrollTo({ top: 0 });
+    }
+    setIsVisible(nowVisible);
+  });
 
   const handleWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
     const el = scrollRef.current;
