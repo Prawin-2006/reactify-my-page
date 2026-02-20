@@ -34,9 +34,11 @@ const Index = () => {
   const eyeX = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], ["55%", "-10%", "-10%", "17.5%"]);
   const maskProgress = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0, 0.5, 0.5, 1]);
   // Opacity: visible → dim → dim → fully visible
-  const eyeOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.66, 0.85, 1], [0.85, 0.4, 0.4, 0.65, 0.8, 1]);
-  // Scale: normal → slight → slight → zoomed in
-  const eyeScale = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [1, 1.05, 1, 1.6]);
+  const eyeOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.66, 0.82, 0.92, 1], [0.85, 0.4, 0.4, 0.65, 1, 1, 0]);
+  // Scale: normal → slight → slight → big zoom
+  const eyeScale = useTransform(scrollYProgress, [0, 0.33, 0.66, 0.85, 1], [1, 1.05, 1, 2.2, 3]);
+  // Black overlay fades in at the very end
+  const blackOverlayOpacity = useTransform(scrollYProgress, [0.88, 1], [0, 1]);
   // Text fade out in third section
   const heroTextOpacity = useTransform(scrollYProgress, [0, 0.33, 0.55], [1, 1, 0]);
   const approachTextOpacity = useTransform(scrollYProgress, [0.33, 0.66, 0.85], [1, 1, 0]);
@@ -225,6 +227,12 @@ const Index = () => {
       <section className="relative min-h-screen flex flex-col justify-center items-center">
         <div className="relative z-10" />
       </section>
+
+      {/* Black overlay that covers everything at end of scroll */}
+      <motion.div
+        className="fixed inset-0 bg-black pointer-events-none z-50"
+        style={{ opacity: blackOverlayOpacity }}
+      />
 
       {/* Bottom blur orb */}
       <div className="fixed bottom-0 left-0 w-96 h-96 rounded-full bg-gradient-to-tr from-muted/50 to-transparent opacity-30 blur-3xl -z-10 pointer-events-none" />
