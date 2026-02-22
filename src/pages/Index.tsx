@@ -220,7 +220,7 @@ const Index = () => {
       </motion.section>
 
       {/* ===== EYE ZOOM SECTION - empty page where eye centers & zooms ===== */}
-      <section id="ai-solutions" className="relative min-h-screen flex flex-col justify-center items-center">
+      <section className="relative min-h-screen flex flex-col justify-center items-center">
         <div className="relative z-10" />
       </section>
 

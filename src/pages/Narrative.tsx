@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { ArrowRight, ArrowUp, Fingerprint, Eye, CircleDot } from "lucide-react";
+import { ArrowRight, Fingerprint, Eye, CircleDot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import eyeBg from "@/assets/eye-bg.jpg";
@@ -173,11 +172,13 @@ const Narrative = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState("hero");
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const [transitionDone, setTransitionDone] = useState(false);
 
-  const navigate = useNavigate();
-  const scrollUpCount = useRef(0);
-  const lastScrollTop = useRef(0);
-  const [showBackHint, setShowBackHint] = useState(false);
+  useEffect(() => {
+    // Circular reveal takes ~1.2s
+    const timer = setTimeout(() => setTransitionDone(true), 1400);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -199,118 +200,62 @@ const Narrative = () => {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Detect wheel-up at top to go back to solution page (window-level to bypass snap)
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    let upCount = 0;
-    let resetTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (e.deltaY < 0 && el.scrollTop <= 5) {
-        upCount += 1;
-        if (upCount >= 3) {
-          window.location.href = "/#ai-solutions";
-          return;
-        }
-        setShowBackHint(true);
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-          upCount = 0;
-          setShowBackHint(false);
-        }, 2000);
-      } else if (e.deltaY > 0) {
-        upCount = 0;
-        setShowBackHint(false);
-        if (resetTimer) clearTimeout(resetTimer);
-      }
-    };
-
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-    const handleTouchEnd = (e: TouchEvent) => {
-      const deltaY = e.changedTouches[0].clientY - touchStartY;
-      if (deltaY > 60 && el.scrollTop <= 5) {
-        upCount += 1;
-        if (upCount >= 2) {
-          window.location.href = "/#ai-solutions";
-          return;
-        }
-        setShowBackHint(true);
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-          upCount = 0;
-          setShowBackHint(false);
-        }, 2000);
-      } else if (deltaY < -20) {
-        upCount = 0;
-        setShowBackHint(false);
-      }
-    };
-
-    // Listen on window to avoid snap-scroll consuming the events
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
-      if (resetTimer) clearTimeout(resetTimer);
-    };
-  }, [navigate]);
-
   const config = eyeConfigs[activeSection] || eyeConfigs.hero;
 
   return (
     <div className="bg-background text-foreground font-body min-h-screen flex flex-col overflow-hidden relative transition-colors duration-500">
+      {/* Circular Reveal Transition */}
+      <AnimatePresence>
+        {!transitionDone && (
+          <motion.div
+            className="fixed inset-0 z-[100] pointer-events-none"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Background that gets revealed through */}
+            <motion.div
+              className="absolute inset-0 bg-background"
+              initial={{
+                clipPath: "circle(0% at 50% 50%)",
+              }}
+              animate={{
+                clipPath: "circle(150% at 50% 50%)",
+              }}
+              transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+              style={{ backgroundColor: "hsl(var(--overlay-bg))" }}
+            />
+            {/* Circular wipe that reveals content underneath */}
+            <motion.div
+              className="absolute inset-0"
+              initial={{
+                clipPath: "circle(150% at 50% 50%)",
+              }}
+              animate={{
+                clipPath: "circle(0% at 50% 50%)",
+              }}
+              transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
+              style={{ backgroundColor: "hsl(var(--background))" }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Grain */}
       <div className="fixed inset-0 bg-grain pointer-events-none z-[60]" />
 
       <Navbar />
 
-      {/* Back to solutions - always visible at hero */}
-      {activeSection === "hero" && (
-        <motion.a
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          href="/#ai-solutions"
-          className="fixed top-20 left-1/2 -translate-x-1/2 z-[70] flex items-center gap-2 px-6 py-3 bg-card/80 backdrop-blur-sm border border-border rounded-full shadow-lg cursor-pointer hover:bg-accent transition-colors"
-        >
-          <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium">
-            Back to Solutions
-          </span>
-        </motion.a>
-      )}
-
-      {/* Scroll-up hint */}
-      <AnimatePresence>
-        {showBackHint && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-32 left-1/2 -translate-x-1/2 z-[70] px-6 py-3 bg-primary text-primary-foreground rounded-full shadow-lg"
-          >
-            <span className="text-xs tracking-[0.2em] uppercase font-medium">
-              ↑ Keep scrolling up to go back
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* Floating Eye — CSS-transitioned based on active section */}
+      {/* Floating Eye — animated based on active section */}
       <motion.div
         className="fixed pointer-events-none z-[5] will-change-transform hidden md:block"
+        initial={{ opacity: 0, scale: 0.5 }}
         animate={{
           width: config.width,
           height: config.height,
           left: config.left,
           top: config.top,
-          opacity: config.opacity,
+          opacity: transitionDone ? config.opacity : 0,
           scale: config.scale,
           rotate: config.rotate,
         }}
@@ -348,7 +293,13 @@ const Narrative = () => {
             ref={(el) => { sectionRefs.current[i] = el; }}
             className={`snap-start h-screen relative flex ${alignClasses[section.align]} overflow-hidden px-6 md:px-10`}
           >
-            {section.content}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={transitionDone ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: i * 0.15, ease: "easeOut" }}
+            >
+              {section.content}
+            </motion.div>
           </section>
         ))}
 
