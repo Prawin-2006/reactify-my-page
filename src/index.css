@@ -83,20 +83,16 @@
 
   html {
     scroll-behavior: smooth;
-    overflow: hidden;
-    height: 100%;
-  }
-
-  body {
-    @apply bg-background text-foreground font-body;
-    height: 100%;
-    overflow: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  body::-webkit-scrollbar {
+  html::-webkit-scrollbar {
     display: none;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
   }
 
   /* Smooth transitions on all interactive elements */
