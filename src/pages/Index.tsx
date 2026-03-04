@@ -112,9 +112,9 @@ const Index = () => {
   const heroTextOpacity = useTransform(scrollYProgress, [0, 0.25, 0.42], [1, 1, 0]);
   const approachTextOpacity = useTransform(scrollYProgress, [0.25, 0.5, 0.65], [1, 1, 0]);
 
-  // Circular reveal from eye pupil center — clip-path circle expanding
+  // Circular reveal from eye pupil — clip-path circle expanding from the pupil position
   const revealRadius = useTransform(scrollYProgress, [0.78, 1], [0, 150]);
-  const revealClipPath = useTransform(revealRadius, (r) => `circle(${r}% at 50% 50%)`);
+  const revealClipPath = useTransform(revealRadius, (r) => `circle(${r}% at 38% 48%)`);
 
   const maskGradient = useTransform(
     scrollYProgress,
