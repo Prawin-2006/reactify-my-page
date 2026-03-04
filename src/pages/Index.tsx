@@ -292,7 +292,7 @@ const Index = () => {
           <div className="relative z-10" />
         </section>
 
-        {/* Circular reveal from eye pupil — background transition */}
+        {/* Circular reveal from eye pupil — covers everything below */}
         <motion.div
           className="fixed inset-0 z-[1] pointer-events-none"
           style={{
@@ -301,6 +301,9 @@ const Index = () => {
           }}
         />
       </div>
+
+      {/* Everything after the eye zoom gets the overlay bg so it looks like it emerged from the pupil */}
+      <div className="relative z-[2]">
 
       {/* AI SOLUTIONS SECTION - in normal document flow */}
       <section id="ai-solutions" className="relative z-10 bg-[hsl(var(--overlay-bg))] py-24 px-6 md:px-12">
@@ -489,6 +492,7 @@ const Index = () => {
 
       <div className="relative z-10 bg-[hsl(var(--overlay-bg))]">
         <Footer />
+      </div>
       </div>
     </div>
   );
