@@ -107,13 +107,14 @@ const Index = () => {
 
   // Eye transforms — zooms in and holds at the end so solutions appear "through" the eye
   const eyeX = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.75], ["55%", "-10%", "-10%", "0%"]);
-  const eyeOpacity = useTransform(scrollYProgress, [0, 0.2, 0.35, 0.5, 0.7, 0.85, 1], [0.85, 0.4, 0.4, 0.65, 1, 0.6, 0]);
-  const eyeScale = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.7, 0.85], [1, 1.05, 1, 1.8, 3.5]);
+  const eyeOpacity = useTransform(scrollYProgress, [0, 0.2, 0.35, 0.5, 0.7, 0.92, 1], [0.85, 0.4, 0.4, 0.65, 1, 1, 0.3]);
+  const eyeScale = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.7, 0.9], [1, 1.05, 1, 1.8, 4.5]);
   const heroTextOpacity = useTransform(scrollYProgress, [0, 0.25, 0.42], [1, 1, 0]);
   const approachTextOpacity = useTransform(scrollYProgress, [0.25, 0.5, 0.65], [1, 1, 0]);
 
-  // Overlay that transitions from transparent to the solutions bg color
-  const overlayOpacity = useTransform(scrollYProgress, [0.75, 0.95], [0, 1]);
+  // Circular reveal from eye pupil center — clip-path circle expanding
+  const revealRadius = useTransform(scrollYProgress, [0.78, 1], [0, 150]);
+  const revealClipPath = useTransform(revealRadius, (r) => `circle(${r}% at 50% 50%)`);
 
   const maskGradient = useTransform(
     scrollYProgress,
@@ -290,11 +291,11 @@ const Index = () => {
           <div className="relative z-10" />
         </section>
 
-        {/* Smooth overlay that fades in over the zoomed eye to transition into solutions */}
+        {/* Circular reveal from eye pupil — solutions emerge from inside the eye */}
         <motion.div
           className="fixed inset-0 pointer-events-none z-[1]"
           style={{
-            opacity: overlayOpacity,
+            clipPath: revealClipPath,
             backgroundColor: "hsl(var(--overlay-bg))",
           }}
         />
