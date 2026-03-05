@@ -18,6 +18,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import { pipelineIllustrations } from "@/components/PipelineIllustrations";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -249,34 +250,45 @@ const Products = () => {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {pipeline.map((step, i) => (
-                <motion.div
-                  key={step.step}
-                  className="group relative p-8 rounded-2xl border border-border bg-card/30 hover:bg-card hover:shadow-lg transition-all duration-500"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  custom={i}
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                      <step.icon className="w-5 h-5 text-primary" />
+              {pipeline.map((step, i) => {
+                const Illustration = pipelineIllustrations[i];
+                return (
+                  <motion.div
+                    key={step.step}
+                    className="group relative p-8 rounded-2xl border border-border bg-card/30 hover:bg-card hover:shadow-lg transition-all duration-500"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={fadeUp}
+                    custom={i}
+                  >
+                    <div className="flex flex-col gap-6">
+                      {/* Animated illustration */}
+                      <div className="relative h-36 w-full rounded-xl bg-muted/30 border border-border/50 overflow-hidden">
+                        {Illustration && <Illustration />}
+                      </div>
+
+                      {/* Text content */}
+                      <div className="flex items-start gap-5">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                          <step.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-muted-foreground tracking-widest">
+                            STEP {step.step}
+                          </span>
+                          <h3 className="text-lg font-display font-medium mt-1 mb-3 text-foreground">
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground tracking-widest">
-                        STEP {step.step}
-                      </span>
-                      <h3 className="text-lg font-display font-medium mt-1 mb-3 text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
