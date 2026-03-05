@@ -33,7 +33,7 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => window.location.pathname === "/");
   const handleLoadingComplete = useCallback(() => setLoading(false), []);
 
   return (
