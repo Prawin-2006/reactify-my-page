@@ -13,7 +13,8 @@ const testimonials = [
     quote: "At A-ZENTRIX, we believe in pushing boundaries and turning bold ideas into reality. Innovation isn't just what we do — it's who we are.",
     name: "Mohamed Arfeen",
     designation: "Founder & CEO at A-ZENTRIX",
-    src: founderImg
+    src: founderImg,
+    objectPosition: "center 35%",
   },
   {
     quote: "Building the future requires both vision and execution. At A-ZENTRIX, we bring both to every project we undertake.",
@@ -109,7 +110,8 @@ const AnimatedTestimonials = ({
                   <img
                     src={testimonial.src}
                     alt={testimonial.name}
-                    className="h-full w-full rounded-3xl object-cover object-center"
+                    className="h-full w-full rounded-3xl object-cover"
+                    style={{ objectPosition: (testimonial as any).objectPosition || "center 20%" }}
                     draggable={false}
                   />
                 </motion.div>
