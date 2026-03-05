@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import founderImg from "@/assets/founder.jpeg";
 import cofounderImg from "@/assets/cofounder.png";
 import developerImg from "@/assets/developer.jpg";
+import prawinImg from "@/assets/prawin.png";
 
 const testimonials = [
   {
@@ -26,6 +27,13 @@ const testimonials = [
     name: "Muruganandam",
     designation: "Developer at A-ZENTRIX",
     src: developerImg,
+  },
+  {
+    quote:
+      "Great design meets great engineering. I'm passionate about crafting experiences that are both beautiful and functional.",
+    name: "Prawin",
+    designation: "Developer at A-ZENTRIX",
+    src: prawinImg,
   },
   {
     quote:
