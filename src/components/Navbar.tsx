@@ -5,7 +5,7 @@ import ScrambleText from "@/components/ScrambleText";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Roadmap", href: "#" },
+  { label: "OUR PRODUCCTS", href: "#" },
   { label: "Solution", href: "#" },
   { label: "Collaborators", href: "/collaborators" },
   { label: "About", href: "#approach" },

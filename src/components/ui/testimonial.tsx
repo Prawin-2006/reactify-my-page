@@ -3,56 +3,43 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import founderImg from "@/assets/founder.jpeg";
 
+import cofounderImg from "@/assets/cofounder.png";
+import muruganandamImg from "@/assets/developer.jpg";
+import prawinImg from "@/assets/prawin.png";
+import niranjaniImg from "@/assets/niranjani.png";
+
 const testimonials = [
-{
-  quote:
-  "At A-ZENTRIX, we believe in pushing boundaries and turning bold ideas into reality. Innovation isn't just what we do — it's who we are.",
-  name: "Mohamed Arfeen",
-  designation: "Founder & CEO at A-ZENTRIX",
-  src: founderImg
-},
-{
-  quote:
-  "The user interface is incredibly intuitive, which made the onboarding process for my team a breeze. We were up and running in hours, not days.",
-  name: "Marcus Johnson",
-  designation: "Head of Operations at Synergy Corp",
-  src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=500&auto=format&fit=crop"
-},
-{
-  quote:
-  "Customer support is top-notch. They are responsive, knowledgeable, and genuinely invested in our success. It feels like a true partnership.",
-  name: "Isabella Rossi",
-  designation: "Client Success Manager at Horizon",
-  src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500&auto=format&fit=crop"
-},
-{
-  quote:
-  "I'm impressed by the constant stream of updates and new features. The development team is clearly passionate and listens to user feedback.",
-  name: "Kenji Tanaka",
-  designation: "Software Engineer at CodeCrafters",
-  src: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=500&auto=format&fit=crop"
-},
-{
-  quote:
-  "The ROI was almost immediate. It streamlined our workflows so effectively that we cut project delivery times by nearly 30%.",
-  name: "Fatima Al-Jamil",
-  designation: "CFO at Apex Financial",
-  src: "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?q=80&w=500&auto=format&fit=crop"
-},
-{
-  quote:
-  "Their innovative approach to problem-solving sets them apart. Every collaboration has exceeded our expectations and delivered measurable results.",
-  name: "Liam Chen",
-  designation: "Product Director at NovaTech",
-  src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=500&auto=format&fit=crop"
-},
-{
-  quote:
-  "Working with A-ZENTRIX transformed our digital strategy. The team's expertise and dedication made all the difference in achieving our goals.",
-  name: "Amara Osei",
-  designation: "Marketing Lead at BrightPath",
-  src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=500&auto=format&fit=crop"
-}];
+  {
+    quote: "At A-ZENTRIX, we believe in pushing boundaries and turning bold ideas into reality. Innovation isn't just what we do — it's who we are.",
+    name: "Mohamed Arfeen",
+    designation: "Founder & CEO at A-ZENTRIX",
+    src: founderImg
+  },
+  {
+    quote: "Building the future requires both vision and execution. At A-ZENTRIX, we bring both to every project we undertake.",
+    name: "Ashwin Ragav",
+    designation: "Co-Founder & CTO at A-ZENTRIX",
+    src: cofounderImg
+  },
+  {
+    quote: "Great software is built on solid foundations. Every line of code we write is crafted with purpose and precision.",
+    name: "Muruganandam",
+    designation: "Lead Developer at A-ZENTRIX",
+    src: muruganandamImg
+  },
+  {
+    quote: "Design and technology should work in harmony. We create experiences that are both beautiful and functional.",
+    name: "Prawin",
+    designation: "UI/UX Designer at A-ZENTRIX",
+    src: prawinImg
+  },
+  {
+    quote: "Innovation thrives when diverse perspectives come together. Our collaborative approach drives exceptional results.",
+    name: "Niranjani Priya",
+    designation: "Project Manager at A-ZENTRIX",
+    src: niranjaniImg
+  }
+];
 
 
 type Testimonial = {
@@ -97,47 +84,36 @@ const AnimatedTestimonials = ({
         <div>
           <div className="relative h-72 w-full sm:h-80 md:h-96">
             <AnimatePresence>
-              {testimonials.map((testimonial, index) => {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              )}
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={testimonial.name}
+                  initial={{
+                    opacity: 0,
+                    scale: 0.9,
+                    rotate: randomRotate(),
+                  }}
+                  animate={{
+                    opacity: isActive(index) ? 1 : 0.7,
+                    scale: isActive(index) ? 1 : 0.95,
+                    rotate: isActive(index) ? "0deg" : randomRotate(),
+                    zIndex: isActive(index) ? 40 : testimonials.length - index,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.9,
+                    rotate: randomRotate(),
+                  }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="absolute inset-0 origin-bottom"
+                >
+                  <img
+                    src={testimonial.src}
+                    alt={testimonial.name}
+                    className="h-full w-full rounded-3xl object-cover object-center"
+                    draggable={false}
+                  />
+                </motion.div>
+              ))}
             </AnimatePresence>
           </div>
         </div>
